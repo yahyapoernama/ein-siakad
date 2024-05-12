@@ -76,7 +76,7 @@ class LoginController extends Controller
             Session::forget('user_info');
             Session::put('user_info', $user_info);
             if (in_array($data->role, ['Superadmin', 'Admin'])) {
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.dashboard');
             }
             return redirect('/');
         }
