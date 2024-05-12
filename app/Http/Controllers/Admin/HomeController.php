@@ -9,6 +9,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return 'Ini Halaman Home Admin';
+        return view('admin.home');
     }
 }
