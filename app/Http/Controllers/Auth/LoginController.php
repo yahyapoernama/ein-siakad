@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -61,6 +62,12 @@ class LoginController extends Controller
             $loginType => $request->username,
             'password' => $request->password
         ];
+
+        $data = User::where($loginType, $request->username)->first();
+
+        if (!$data) {
+            return redirect('/login')->withErrors(['username' => ucfirst($loginType) . ' tidak terdaftar', 'password' => 'Password tidak sesuai']);
+        }
     
         // Login
         if (auth()->attempt($login)) {
@@ -82,6 +89,6 @@ class LoginController extends Controller
         }
 
         // Jika salah maka akan kembali ke halaman login dengan pesan error
-        return redirect('/login')->with(['error' => 'Username dan Password tidak cocok!']);
+        return redirect('/login')->withErrors(['username' => ucfirst($loginType) . ' tidak sesuai', 'password' => 'Password tidak sesuai']);
     }
 }
