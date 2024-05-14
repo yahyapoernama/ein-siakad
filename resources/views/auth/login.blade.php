@@ -1,22 +1,24 @@
 @extends('auth.layouts.app')
 
 @section('content')
-<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+<form class="login100-form validate-form" id="form_input" method="POST" action="{{ route('login') }}">
     @csrf
     <span class="login100-form-title">
         Member Login
     </span>
 
     @php
-        $redBorder = null;
+        $hasError = null;
+        $redBorder = false;
         if ($errors->any()) {
+            $hasError = true;
             $redBorder = 'border border-danger';
         }
     @endphp
 
     <div class="wrap-input100 mb-0 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-        <input class="input100 {{ $redBorder }}" type="text" name="username" placeholder="Username" minlength="5"
-            oninvalid="this.setCustomValidity('Kolom Username wajib diisi')"
+        <input class="input100 {{ $redBorder }}" type="text" id="username" name="username" placeholder="Username" minlength="5"
+            oninvalid="this.setCustomValidity('Kolom Username wajib diisi dan minimal 5 digit')"
             oninput="this.setCustomValidity('')" required>
         <span class="focus-input100"></span>
         <span class="symbol-input100">
@@ -24,12 +26,14 @@
         </span>
     </div>
     @if ($errors->has('username'))
+    <div id="error_username">
         <small class="ml-4 text-danger">{{ $errors->first('username') }}</small>
+    </div>
     @endif
 
-    <div class="wrap-input100 mt-3 validate-input" data-validate = "Password is required">
-        <input class="input100 {{ $redBorder }}" type="password" name="password" placeholder="Password"
-            oninvalid="this.setCustomValidity('Kolom Password wajib diisi')"
+    <div class="wrap-input100 mb-0 mt-3 validate-input" data-validate = "Password is required">
+        <input class="input100 {{ $redBorder }}" type="password" id="password" name="password" placeholder="Password" minlength="5"
+            oninvalid="this.setCustomValidity('Kolom Password wajib diisi dan minimal 5 digit')"
             oninput="this.setCustomValidity('')" required>
         <span class="focus-input100"></span>
         <span class="symbol-input100">
@@ -37,7 +41,9 @@
         </span>
     </div>
     @if ($errors->has('password'))
+    <div id="error_password">
         <small class="ml-4 text-danger">{{ $errors->first('password') }}</small>
+    </div>
     @endif
     
     <div class="container-login100-form-btn">
@@ -63,3 +69,25 @@
     </div>
 </form>
 @endsection
+
+@push('custom-scripts')
+    <script>
+        $(function() {
+            if ('{{ $hasError }}') {
+                let column = ['username', 'password'];
+                column.forEach(el => {
+                    $('#' + el).on('keyup change', function() {
+                        if ($(this).val().length === 0) {
+                            $(this).removeClass('border-success');
+                            $(this).addClass('border-danger');
+                        } else {
+                            $(this).removeClass('border-danger');
+                            $(this).addClass('border-success');
+                        }
+                        $('#error_' + el).slideUp();
+                    });
+                });
+            }
+        });
+    </script>
+@endpush
