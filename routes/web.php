@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/{url}', function () {
+//     return response()->view('errors.403', [], 403);
+// })->where('url', 'register');
+
+Route::get('/password/{url}', function () {
+    abort(403);
+})->where('url', '.*');
+
+Route::get('/{url}', function () {
+    abort(403);
+})->where('url', 'register');
+
 Auth::routes();
+
 
 Route::middleware(['auth', 'role:superadmin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.dashboard');
