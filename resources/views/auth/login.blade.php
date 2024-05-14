@@ -1,6 +1,6 @@
 @extends('auth.layouts.app')
 
-@push('form')
+@section('content')
 <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
     @csrf
     <span class="login100-form-title">
@@ -62,4 +62,4 @@
         </a> --}}
     </div>
 </form>
-@endpush
+@endsection

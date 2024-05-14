@@ -15,10 +15,12 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/animate/animate.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/css-hamburgers/hamburgers.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/select2/select2.min.css') }}">
+	@stack('styles')
     <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/_login_v1/css/util.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/_login_v1/css/main.css') }}">
     <!--===============================================================================================-->
+	@stack('custom-styles')
 </head>
 <body>
 	
@@ -29,7 +31,7 @@
 					<img src="{{ asset('assets/img/favicon.png') }}" alt="IMG">
 				</div>
 
-				@stack('form')
+				@yield('content')
 			</div>
 		</div>
 	</div>
@@ -51,7 +53,9 @@
 			scale: 1.1
 		})
 	</script>
+	@stack('scripts')
     <!--===============================================================================================-->
 	<script src="{{ asset('js/main.js') }}"></script>
+	@stack('custom-scripts')
 </body>
 </html>
