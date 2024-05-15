@@ -10,7 +10,7 @@
                     <i class="align-middle" data-feather="settings"></i>
                 </a>
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
-                    <img src="{{ asset('assets/img/avatar/no-avatar.jpg') }}" class="avatar img-fluid rounded-circle mr-1" alt="{{ request()->user()->name }}" /> 
+                    <img src="{{ asset('assets/img/avatar/no-avatar.jpg') }}" class="avatar img-fluid rounded mr-1" alt="{{ request()->user()->name }}" /> 
                     <span class="text-dark">{{ request()->user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
