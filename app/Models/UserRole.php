@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class UserRole extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $dates = ['deleted_at'];
+    protected $fillable = ['name', 'is_active'];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_roles');
+        return $this->hasMany(User::class);
     }
 }
