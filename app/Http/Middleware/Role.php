@@ -12,11 +12,21 @@ class Role
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  array  ...$roles  Array of role names to check against
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (strcasecmp($request->user()->role, $role) == 0) {
+        // Memastikan user terautentikasi
+        if (!$request->user()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Mendapatkan role name dari user
+        $userRoleName = $request->user()->role ? $request->user()->role->name : null;
+
+        // Cek apakah role name user termasuk dalam array role yang diberikan
+        if (in_array($userRoleName, $roles)) {
             return $next($request);
         }
 

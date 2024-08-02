@@ -49,8 +49,9 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi Kolom Username / Email
         $this->validate($request, [
-            'username' => 'required|string', // Validasi Kolom Username / Email
+            'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
@@ -63,8 +64,10 @@ class LoginController extends Controller
             'password' => $request->password
         ];
 
+        // Ambil data User berdasarkan tipe loginnya
         $data = User::where($loginType, $request->username)->first();
 
+        // Cek ketersediaan data User
         if (!$data) {
             return redirect('/login')->withErrors(['username' => ucfirst($loginType) . ' tidak terdaftar', 'password' => 'Password tidak sesuai']);
         }
@@ -72,19 +75,20 @@ class LoginController extends Controller
         // Login
         if (auth()->attempt($login)) {
             // Ambil data yang nantinya disimpan melalui session
-            $data = DB::table('users')
-                ->where('email', $request->username)
-                ->orWhere('username', $request->username)
-                ->first();
+            $data = User::where('email', $request->username)->orWhere('username', $request->username)->first();
             $user_info['name'] = $data->name;
             $user_info['email'] = $data->email;
             $user_info['username'] = $data->username;
-            $user_info['role'] = $data->role;
+            $user_info['role_id'] = $data->role_id;
+            $user_info['role_name'] = $data->role->name;
             Session::forget('user_info');
             Session::put('user_info', $user_info);
-            if (in_array($data->role, ['Superadmin', 'Admin'])) {
+
+            // Redirect User Admin ke halaman khusus Admin
+            if (in_array($data->role->name, ['Superadmin', 'Admin'])) {
                 return redirect()->route('admin.dashboard');
             }
+            // Redirect User selain Admin
             return redirect('/');
         }
 

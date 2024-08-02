@@ -35,7 +35,7 @@ Route::get('/{url}', function () {
 Auth::routes();
 
 
-Route::middleware(['auth', 'role:superadmin'])->group(function () {
+Route::middleware(['auth', 'role:Superadmin,Admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.dashboard');
 });
 
@@ -45,4 +45,4 @@ Route::prefix('test')->group(function () {
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
