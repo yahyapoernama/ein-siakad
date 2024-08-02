@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,12 +15,19 @@ class SuperadminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Superadmin',
-            'username' => 'superadmin',
-            'email' => 'superadmin@aliasesein.com',
-            'password' => Hash::make('superadmin'),
-            'role' => 'Superadmin',
-        ]);
+        $username = 'superadmin';
+        if (!User::where('username', $username)->exists()) {
+            $roleId = UserRole::create([
+                'name' => 'Superadmin',
+            ])->id;
+    
+            User::create([
+                'name' => 'Superadmin',
+                'username' => $username,
+                'role_id' => $roleId,
+                'email' => 'superadmin@aliasesein.com',
+                'password' => Hash::make('superadmin'),
+            ]);
+        }
     }
 }
