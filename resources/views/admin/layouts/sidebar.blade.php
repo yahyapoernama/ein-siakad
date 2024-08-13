@@ -9,17 +9,20 @@
                 $menuGroups = \App\Models\MenuGroup::all();
             @endphp
             @foreach ($menuGroups as $menuGroup)
-                <li class="sidebar-header">
-                    {!! $menuGroup->name !!}
-                </li>
-
-                @foreach ($menuGroup->items as $menuItem)
-                    <li class="sidebar-item {{ routeActive($menuItem->route) }}">
-                        <a class="sidebar-link" href="{{ route($menuItem->route) }}">
-                            <i class="{!! $menuItem->icon !!}"></i> <span class="align-middle">{{ $menuItem->name }}</span>
-                        </a>
+                @if (isSuperadmin())
+                    <li class="sidebar-header">
+                        {!! $menuGroup->name !!}
                     </li>
-                @endforeach
+                    @foreach ($menuGroup->items as $menuItem)
+                        @if (isSuperadmin())
+                            <li class="sidebar-item {{ routeActive($menuItem->route) }}">
+                                <a class="sidebar-link" href="{{ route($menuItem->route) }}">
+                                    <i class="{!! $menuItem->icon !!}"></i> <span class="align-middle">{{ $menuItem->name }}</span>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                @endif
             @endforeach
             
             {{-- <li class="sidebar-header">
