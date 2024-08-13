@@ -1,5 +1,6 @@
 @stack('scripts')
 
+<script src="{{ asset('vendor/fontawesome/js/all.min.js') }}"></script>
 <script src="{{ asset('vendor/_adminkit/js/app.js') }}"></script>
 
 <script>
