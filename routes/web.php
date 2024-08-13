@@ -34,6 +34,12 @@ Route::get('/{url}', function () {
 
 Auth::routes();
 
+Route::middleware(['auth'])->group(function() {
+    Route::get('/dashboard', [TestController::class, 'index'])->name('dashboard');
+    Route::get('/setting', [TestController::class, 'index'])->name('setting');
+    Route::get('/role', [TestController::class, 'index'])->name('role');
+    Route::get('/user', [TestController::class, 'index'])->name('user');
+});
 
 Route::middleware(['auth', 'role:Superadmin,Admin'])->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.dashboard');

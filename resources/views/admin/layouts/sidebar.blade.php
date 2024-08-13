@@ -5,7 +5,24 @@
         </a>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-header">
+            @php
+                $menuGroups = \App\Models\MenuGroup::all();
+            @endphp
+            @foreach ($menuGroups as $menuGroup)
+                <li class="sidebar-header">
+                    {!! $menuGroup->name !!}
+                </li>
+
+                @foreach ($menuGroup->items as $menuItem)
+                    <li class="sidebar-item {{ routeActive($menuItem->route) }}">
+                        <a class="sidebar-link" href="{{ route($menuItem->route) }}">
+                            <i class="{!! $menuItem->icon !!}"></i> <span class="align-middle">{{ $menuItem->name }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            @endforeach
+            
+            {{-- <li class="sidebar-header">
                 Main
             </li>
 
@@ -13,7 +30,7 @@
                 <a class="sidebar-link" href="{{ route('admin.dashboard') }}">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </nav>
